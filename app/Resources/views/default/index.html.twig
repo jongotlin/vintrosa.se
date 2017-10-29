@@ -18,17 +18,19 @@
                             <span class="bg-light-blue"> November 2017</span>
                         </li>
 
+                        {% for post in posts %}
                         <li>
                             <i class="text bg-blue">20</i>
 
                             <div class="timeline-item">
                                 <span class="time"><i class="fa fa-clock-o"></i> 20 November 15:00 - 17:00</span>
-                                <h3 class="timeline-header">Vintrosa IS F07/08 säljer bröd</h3>
+                                <h3 class="timeline-header">{{ post.title }}</h3>
                                 <div class="timeline-body">
-                                    Kom och köp!
+                                    {{ post.body|nl2br }}
                                 </div>
                             </div>
                         </li>
+                        {% endfor %}
 
                         <li>
                             <i class="fa fa-user bg-aqua"></i>
