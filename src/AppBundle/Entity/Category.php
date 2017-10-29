@@ -33,12 +33,12 @@ class Category
      *
      * @ORM\Column(type="string")
      */
-    private $icon;
+    private $label;
 
     /**
      * @var Post[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Post", mappedBy="category")
+     * @ORM\ManyToMany(targetEntity="Post", mappedBy="categories")
      */
     private $posts;
 
@@ -77,17 +77,17 @@ class Category
     /**
      * @return string
      */
-    public function getIcon()
+    public function getLabel()
     {
-        return $this->icon;
+        return $this->label;
     }
 
     /**
-     * @param string $icon
+     * @param string $label
      */
-    public function setIcon($icon)
+    public function setLabel($label)
     {
-        $this->icon = $icon;
+        $this->label = $label;
     }
 
     /**

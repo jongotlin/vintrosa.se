@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -84,6 +85,13 @@ class Post
     private $publishedAt;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $url;
+
+    /**
      * @var string
      *
      * @Gedmo\Slug(fields={"title"})
@@ -94,14 +102,14 @@ class Post
     /**
      * @var Category
      *
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="posts")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="posts")
      */
-    private $category;
+    private $categories;
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -261,17 +269,25 @@ class Post
     /**
      * @return Category
      */
-    public function getCategory()
+    public function getCategories()
     {
-        return $this->category;
+        return $this->categories;
+    }
+
+    /**
+     * @param Category $categories
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
     }
 
     /**
      * @param Category $category
      */
-    public function setCategory($category)
+    public function addCategory(Category $category)
     {
-        $this->category = $category;
+        $this->categories->add($category);
     }
 
     /**
@@ -280,6 +296,22 @@ class Post
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param null|string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
     }
 }
 

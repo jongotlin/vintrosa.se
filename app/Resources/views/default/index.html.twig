@@ -8,30 +8,44 @@
             <div class="col-md-offset-2 col-md-8 col-sm-12 top-margin" >
                 <div >
                     <ul class="timeline">
-                        <li class="time-label">
-                                <span class="bg-orange">Händer i Vintrosa</span>
-                            <br />
-                            <br />
-                        </li>
+                        {% for year, postsMonth in postsByYearAndMonth %}
+                            {% if year != "now"|date('Y') %}
+                                <li class="time-label">
+                                    <span class="bg-green">{{ year }}</span>
+                                </li>
+                            {% endif %}
 
-                        <li class="time-label">
-                            <span class="bg-light-blue"> November 2017</span>
-                        </li>
+                            {% for month, posts in postsMonth %}
+                                <li class="time-label">
+                                    <span class="bg-light-blue"> {{ month|month_name }}</span>
+                                </li>
+                                {% for post in posts %}
+                                    <li>
+                                        <i class="text bg-blue">{{ post.date|date('j') }}</i>
 
-                        {% for post in posts %}
-                        <li>
-                            <i class="text bg-blue">20</i>
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fa fa-clock-o"></i> 20 {{ post.createdAt|month_name }}
+                                                {% if post.fromDate and post.toDate %}
+                                                    {{ post.fromDate|date('H:i') }} - {{ post.toDate|date('H:i') }}
+                                                {% endif %}</span>
+                                            <h3 class="timeline-header">{{ post.title }}</h3>
+                                            <div class="timeline-body">
+                                                {{ post.body|nl2br }}
+                                            </div>
+                                            <div class='timeline-footer'>
+                                                {% if post.url %}
+                                                    <a class="btn btn-primary btn-xs pull-right" href="{{ post.url }}">Läs mer</a>
+                                                {% endif %}
+                                                {% for category in post.categories %}
+                                                    <span class="label label-{{ category.label }}">{{ category.name }}</span>
+                                                {% endfor %}
+                                            </div>
 
-                            <div class="timeline-item">
-                                <span class="time"><i class="fa fa-clock-o"></i> 20 November 15:00 - 17:00</span>
-                                <h3 class="timeline-header">{{ post.title }}</h3>
-                                <div class="timeline-body">
-                                    {{ post.body|nl2br }}
-                                </div>
-                            </div>
-                        </li>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            {% endfor %}
                         {% endfor %}
-
                         <li>
                             <i class="fa fa-user bg-aqua"></i>
                             <div class="timeline-item">

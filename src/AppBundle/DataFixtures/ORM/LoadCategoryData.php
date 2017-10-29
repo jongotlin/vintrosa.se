@@ -12,13 +12,13 @@ class LoadCategoryData extends AbstractFixture
     {
         $category = new Category();
         $category->setName('Sport');
-        $category->setIcon('sport');
+        $category->setLabel('info');
         $this->setReference('category_sport', $category);
         $manager->persist($category);
 
         $category = new Category();
         $category->setName('Kultur');
-        $category->setIcon('kultur');
+        $category->setLabel('warning');
         $this->setReference('category_kultur', $category);
         $manager->persist($category);
 

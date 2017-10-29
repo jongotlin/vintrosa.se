@@ -12,12 +12,26 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $posts = $this->getDoctrine()->getRepository(Post::class)->findAll();
+        /** @var Post[] $posts */
+        $posts = $this->getDoctrine()->getRepository(Post::class)->findForFirstPage();
+
+        $postsByYearAndMonth = [];
+        foreach ($posts as $post) {
+            $yearKey = (int) $post->getDate()->format('Y');
+            $monthKey = (int) $post->getDate()->format('n');
+            if (!array_key_exists($yearKey, $postsByYearAndMonth)) {
+                $postsByYearAndMonth[$yearKey] = [];
+            }
+            if (!array_key_exists($monthKey, $postsByYearAndMonth[$yearKey])) {
+                $postsByYearAndMonth[$yearKey][$monthKey] = [];
+            }
+            $postsByYearAndMonth[$yearKey][$monthKey][] = $post;
+        }
 
         return $this->render('default/index.html.twig', [
-            'posts' => $posts,
+            'postsByYearAndMonth' => $postsByYearAndMonth,
         ]);
     }
 }
